@@ -1,0 +1,11 @@
+{
+    "name": "labofetch",
+    "version": "1.0.0",
+    "description": "Labo",
+    "scripts": {
+        "watch:sass": "node-sass -w -o ./pokedex/css ./pokedex/sass",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "",
+    "license": "ISC"
+}
