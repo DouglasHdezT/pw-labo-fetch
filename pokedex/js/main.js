@@ -1,5 +1,8 @@
-window.onload = () => {
+const BASE_URL = "https://pokeapi.co/api/v2";
 
+
+window.onload = () => {
+    fetchData(`${BASE_URL}/pokemon`, createAllPokemons);
 }
 
 /**
@@ -11,10 +14,10 @@ const createPokemonCard = (pokemon) => {
     const container = document.createElement("div");
     container.classList.add("pokemon-card");
 
-    const typesHolders = types.map(type => `<p>${type}</p>`);
+    const typesHolders = types.reduce((acc, type) => acc +`<p>${type}</p>`, "");
 
     const content = `
-        div class="image-container">
+        <div class="image-container">
             <img src="${img}" alt="${name}">
             <span class="pokedex-index"> ${index} </span>
         </div>
@@ -31,7 +34,10 @@ const createPokemonCard = (pokemon) => {
     return container;
 }
 
-const createPokemon = (rawPokemon) => { 
+/**
+ * Función encargada de trasnformar los datos de la API de un poke a datos procesables 
+ */
+const parsePokemon = (rawPokemon) => { 
     const types = rawPokemon.types.map(element => element.type.name);
 
     const pokemon = {
@@ -42,4 +48,44 @@ const createPokemon = (rawPokemon) => {
     }
 
     return pokemon;
+}
+
+/**
+ * Fetch universal function
+ */
+const fetchData = async (uri, action) => { 
+    try {
+        const result = await fetch(uri);
+
+        if (result.ok) {
+            const data = await result.json();
+            action(data);
+        } else { 
+            console.error("Error en la petición")
+        }
+    } catch (error) {
+        console.error("Ocurrió un error :/")
+    }
+}
+
+/**
+ * A paritr de los datos de la API procesa los pokemones, haciendo fetch a cada uno de ellos
+ */
+const createAllPokemons = async ({ results: rawPokemons }) => { 
+    try {
+        const pokemonsUrls = rawPokemons.map(el => el.url);
+        const cardsContainer = document.querySelector(".cards");
+
+        cardsContainer.innerHTML = "";
+
+        for (const url of pokemonsUrls) { 
+            await fetchData(url, (rawPokemon) => {
+                const pokemon = parsePokemon(rawPokemon);
+                const card = createPokemonCard(pokemon);
+                cardsContainer.appendChild(card);
+            });
+        }
+    } catch (error) {
+        console.error("Ocurrió un error :/")
+    }
 }
