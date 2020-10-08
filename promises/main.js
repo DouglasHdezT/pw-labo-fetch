@@ -50,3 +50,9 @@ promesa2(4)
     .catch((error) => { 
         console.error(`Error: ${error}`);
     });
+
+/**
+ * La maravillosa aparición de async y await
+ * Primero lo primero: Async
+ */
+
