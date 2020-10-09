@@ -17,3 +17,23 @@ let fetchEx1 = () => {
         })
         .catch(err => console.error("Algo salio mal xc"));
 }
+
+let fetch2 = async () => { 
+    try {
+        const uri = `${BASE_URL}/pokemon/`;
+
+        const response = await fetch(uri);
+
+        //Validations
+
+        if (response.ok) {
+            const data = await response.json();
+            console.log(data)
+        } else { 
+            console.warn(`Status: ${response.status}`);
+        }
+
+    } catch (error) {
+        console.error("Algo salio mal :v");
+    }
+}
