@@ -80,3 +80,35 @@ const createAllPokemons = async ({ results: rawPokemons }) => {
     
     }
 }
+
+//Versión con Promise.all
+
+/* const createAllPokemons = async ({ results: rawPokemons }) => {
+    const pokemonsUrls = rawPokemons.map((element) => element.url);
+
+    const cardContainer = document.querySelector(".cards");
+    cardContainer.innerHTML = "";
+
+    const promisesPokemons = pokemonsUrls.map(async (url) => {
+            try {
+                const response = await fetch(url);
+
+                if (response.ok) {
+                    const data = await response.json();
+                    const pokemon = parsePokemon(data);
+                    const card = createPokemonCard(pokemon);
+
+                    return card;
+                } else {
+                    console.warn("Error en la petición");
+                }
+            } catch (error) {
+                console.error("Ocurrio un error :'v");
+            }
+    });
+
+    const cards = await Promise.all(promisesPokemons);
+
+    cards.forEach(card => cardContainer.appendChild(card));
+    console.log(cards);
+}; */
